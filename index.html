@@ -2,80 +2,42 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DSE Predict - Dhaka Stock Prediction Game</title>
-<style>
-body{font-family:Arial;background:#0f172a;color:white;margin:0;padding:15px}
-.header{background:#1e293b;padding:15px;border-radius:12px;text-align:center}
-.logo{font-size:28px;font-weight:bold;color:#22c55e}
-.card{background:#1e293b;padding:20px;border-radius:12px;margin-top:15px}
-.price{font-size:32px;font-weight:bold}
-.up{color:#22c55e}.down{color:#ef4444}
-.btn{width:48%;padding:15px;font-size:18px;font-weight:bold;border:none;border-radius:10px;cursor:pointer}
-.btn-up{background:#22c55e;color:white}
-.btn-down{background:#1e293b;border:2px solid #ef4444;color:#ef4444}
-.points{background:#052e16;padding:10px;border-radius:8px;text-align:center;margin:15px 0;border:1px solid #22c55e}
-.leader{background:#334155;padding:10px;border-radius:8px;margin-top:5px}
-</style>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DSE Predict PRO</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;600&family=Inter:wght@800;700&display=swap" rel="stylesheet">
+<style>body{font-family:'Inter','Hind Siliguri',sans-serif;background:#070b14}</style>
 </head>
-<body>
+<body class="text-white">
+<header class="sticky top-0 z-50 bg-[#0b101f]/90 backdrop-blur-xl border-b border-white/5 px-4 py-3.5 flex justify-between items-center">
+<div class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-xl bg-gradient-to-br from-green-400 to-cyan-400 flex items-center justify-center font-black text-black">D</div><h1 class="font-extrabold text-[17px] tracking-tight">DSE Predict <span class="ml-1 bg-green-400 text-black px-2 py-0.5 rounded-full text-[11px]">PRO</span></h1></div><div class="bg-[#1a2335] px-3 py-1 rounded-full text-xs font-bold border border-white/10">🔥 1,250 pts</div>
+</header>
 
-<div class="header">
-<div class="logo">DSE Predict</div>
-<small>DHAKA STOCK EXCHANGE • PREDICTION GAME</small>
-<div style="margin-top:5px;font-size:12px">✅ শিক্ষামূলক • ফ্রি • কোনো টাকা লাগে না</div>
+<div class="max-w-[420px] mx-auto p-3">
+<div class="bg-gradient-to-b from-[#131c2e] to-[#0f172a] rounded-[24px] p-5 border border-white/[0.07] shadow-2xl">
+<div class="flex justify-between items-center"><p class="text-[#7dd3fc] text-xs font-bold tracking-widest">DSEX INDEX</p><p class="text-emerald-400 text-[11px] font-bold">● LIVE • Dhaka Stock Exchange</p></div>
+<h1 class="text-[42px] font-black tracking-tighter mt-2 leading-none">5,426.25 <span class="text-[16px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-full ml-1">↗ 0.45%</span></h1>
+<p class="text-emerald-300/70 text-sm mt-1 font-semibold">+24.12 • Today</p>
+<svg viewBox="0 0 300 70" class="w-full h-[78px] mt-4"><polyline fill="none" stroke="#34d399" stroke-width="2.5" points="0,55 30,50 60,35 90,38 120,32 150,28 180,22 210,12 240,18 270,14 300,8" /></svg>
+<div class="flex justify-between text-[10px] text-white/30 mt-1"><span>09:30</span><span>10:30</span><span>11:30</span><span>12:30</span><span>01:30</span><span>02:30</span></div>
 </div>
 
-<div class="points">
-🎁 আপনার পয়েন্ট: <b id="pts">1000</b> Points <br>
-<small>প্রতিদিন ফ্রি ১০০০ পয়েন্ট</small>
+<div class="grid grid-cols-2 gap-3 mt-3">
+<button onclick="alert('✅ UP নেওয়া হলো!')" class="h-[68px] rounded-[20px] bg-gradient-to-r from-[#00e676] to-[#00c2a8] font-black text-[22px] shadow-[0_10px_30px_rgba(0,230,118,0.3)]">^<br>UP</button>
+<button onclick="alert('✅ DOWN নেওয়া হলো!')" class="h-[68px] rounded-[20px] bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] font-black text-[22px] shadow-[0_10px_30px_rgba(255,65,108,0.3)]">v<br>DOWN</button>
 </div>
 
-<div class="card">
-<h3>DSEX Index • Live</h3>
-<div class="price" id="dsex">5,423.15 <span class="up">+0.45%</span></div>
-<small>ঢাকা স্টক এক্সচেঞ্জ ইনডেক্স</small>
-<p>আজ DSEX বাড়বে নাকি কমবে?</p>
-<button class="btn btn-up" onclick="predict('UP')">⬆️ UP বাড়বে</button>
-<button class="btn btn-down" onclick="predict('DOWN')">⬇️ DOWN কমবে</button>
-<p id="result" style="margin-top:15px;font-weight:bold"></p>
+<div class="bg-[#111b2d] rounded-[20px] p-4 mt-4 border border-white/[0.06]">
+<div class="flex justify-between"><h3 class="font-bold">Halal Stock Watchlist</h3><span class="text-[10px] bg-emerald-500/20 border border-emerald-500/20 px-2 py-0.5 rounded-full">HALAL CERTIFIED</span></div>
+<div class="mt-4 space-y-3 text-sm"><div class="flex justify-between"><span><b>BEXIMCO</b> <span class="text-white/50 text-xs">• Pharma</span></span><span class="text-right"><b>128.50</b><br><span class="text-emerald-400 text-xs">+1.22% ▲</span></span></div><div class="flex justify-between"><span><b>GP</b> <span class="text-white/50 text-xs">• Telecom</span></span><span class="text-right"><b>312.40</b><br><span class="text-red-400 text-xs">-0.62% ▼</span></span></div><div class="flex justify-between"><span><b>SQPHARMA</b> <span class="text-white/50 text-xs">• Pharma</span></span><span class="text-right"><b>210.75</b><br><span class="text-emerald-400 text-xs">+0.88% ▲</span></span></div></div>
 </div>
 
-<div class="card">
-<h3>🏆 লিডারবোর্ড - এই সপ্তাহে</h3>
-<div class="leader">1. Arif_BD - 24,500 pts</div>
-<div class="leader">2. Riyadh_Probasi - 22,100 pts</div>
-<div class="leader">3. DhakaTrader - 19,800 pts</div>
+<div class="bg-[#111b2d] rounded-[20px] p-4 mt-3 border border-white/[0.06]">
+<h3 class="font-bold">Leaderboard <span class="float-right text-[11px] bg-white/5 px-2 py-1 rounded-full">Points: 1,250 pts</span></h3>
+<div class="mt-3 text-sm space-y-2"><p>#5 <b>Your Rank</b> - You • 1,250 pts <span class="text-emerald-400 float-right">Rising ★</span></p><p class="text-white/60">#4 TradingAce • 1,340 pts</p><p class="text-white/60">#6 StockSage • 1,180 pts</p></div>
+<button onclick="alert('Invite link copied!')" class="w-full mt-4 bg-white/[0.06] py-3 rounded-xl font-bold text-sm">👥 ইনভাইট করলে +500 পয়েন্ট</button>
 </div>
-
-<div class="card" style="font-size:12px;opacity:0.7">
-<b>ডিসক্লেইমার:</b> DSE Predict একটি শিক্ষামূলক ফ্রি গেম। এখানে কোনো আসল টাকা দিয়ে ট্রেডিং হয় না। শুধু পয়েন্ট দিয়ে প্রেডিকশন শেখা হয়।
+<p class="text-center text-[10px] text-white/20 mt-4">শিক্ষামূলক গেম • আসল টাকা নয় • হালাল স্টক</p>
 </div>
-
-<script>
-let points = 1000;
-function predict(dir){
-  if(points < 100){alert("পয়েন্ট শেষ! কাল আবার পাবেন");return;}
-  points -= 100;
-  document.getElementById("pts").innerText = points;
-  // র‍্যান্ডম রেজাল্ট - শেখার জন্য
-  let win = Math.random() > 0.5;
-  if(win){
-    points += 200;
-    document.getElementById("result").innerHTML = "🎉 আপনি জিতেছেন! +200 Points";
-    document.getElementById("result").style.color = "#22c55e";
-  } else {
-    document.getElementById("result").innerHTML = "😢 হেরে গেছেন! আবার চেষ্টা করুন";
-    document.getElementById("result").style.color = "#ef4444";
-  }
-  document.getElementById("pts").innerText = points;
-}
-// DSEX লাইভ প্রাইসের মতো দেখানোর জন্য
-setInterval(()=>{
-  let base = 5423 + Math.random()*10 -5;
-  document.getElementById("dsex").innerHTML = base.toFixed(2) + ' <span class="up">+0.45%</span>';
-},3000);
-</script>
-
 </body>
 </html>
