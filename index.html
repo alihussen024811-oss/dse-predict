@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSE Predict - Dhaka Stock Prediction Game</title>
+<style>
+body{font-family:Arial;background:#0f172a;color:white;margin:0;padding:15px}
+.header{background:#1e293b;padding:15px;border-radius:12px;text-align:center}
+.logo{font-size:28px;font-weight:bold;color:#22c55e}
+.card{background:#1e293b;padding:20px;border-radius:12px;margin-top:15px}
+.price{font-size:32px;font-weight:bold}
+.up{color:#22c55e}.down{color:#ef4444}
+.btn{width:48%;padding:15px;font-size:18px;font-weight:bold;border:none;border-radius:10px;cursor:pointer}
+.btn-up{background:#22c55e;color:white}
+.btn-down{background:#1e293b;border:2px solid #ef4444;color:#ef4444}
+.points{background:#052e16;padding:10px;border-radius:8px;text-align:center;margin:15px 0;border:1px solid #22c55e}
+.leader{background:#334155;padding:10px;border-radius:8px;margin-top:5px}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="logo">DSE Predict</div>
+<small>DHAKA STOCK EXCHANGE • PREDICTION GAME</small>
+<div style="margin-top:5px;font-size:12px">✅ শিক্ষামূলক • ফ্রি • কোনো টাকা লাগে না</div>
+</div>
+
+<div class="points">
+🎁 আপনার পয়েন্ট: <b id="pts">1000</b> Points <br>
+<small>প্রতিদিন ফ্রি ১০০০ পয়েন্ট</small>
+</div>
+
+<div class="card">
+<h3>DSEX Index • Live</h3>
+<div class="price" id="dsex">5,423.15 <span class="up">+0.45%</span></div>
+<small>ঢাকা স্টক এক্সচেঞ্জ ইনডেক্স</small>
+<p>আজ DSEX বাড়বে নাকি কমবে?</p>
+<button class="btn btn-up" onclick="predict('UP')">⬆️ UP বাড়বে</button>
+<button class="btn btn-down" onclick="predict('DOWN')">⬇️ DOWN কমবে</button>
+<p id="result" style="margin-top:15px;font-weight:bold"></p>
+</div>
+
+<div class="card">
+<h3>🏆 লিডারবোর্ড - এই সপ্তাহে</h3>
+<div class="leader">1. Arif_BD - 24,500 pts</div>
+<div class="leader">2. Riyadh_Probasi - 22,100 pts</div>
+<div class="leader">3. DhakaTrader - 19,800 pts</div>
+</div>
+
+<div class="card" style="font-size:12px;opacity:0.7">
+<b>ডিসক্লেইমার:</b> DSE Predict একটি শিক্ষামূলক ফ্রি গেম। এখানে কোনো আসল টাকা দিয়ে ট্রেডিং হয় না। শুধু পয়েন্ট দিয়ে প্রেডিকশন শেখা হয়।
+</div>
+
+<script>
+let points = 1000;
+function predict(dir){
+  if(points < 100){alert("পয়েন্ট শেষ! কাল আবার পাবেন");return;}
+  points -= 100;
+  document.getElementById("pts").innerText = points;
+  // র‍্যান্ডম রেজাল্ট - শেখার জন্য
+  let win = Math.random() > 0.5;
+  if(win){
+    points += 200;
+    document.getElementById("result").innerHTML = "🎉 আপনি জিতেছেন! +200 Points";
+    document.getElementById("result").style.color = "#22c55e";
+  } else {
+    document.getElementById("result").innerHTML = "😢 হেরে গেছেন! আবার চেষ্টা করুন";
+    document.getElementById("result").style.color = "#ef4444";
+  }
+  document.getElementById("pts").innerText = points;
+}
+// DSEX লাইভ প্রাইসের মতো দেখানোর জন্য
+setInterval(()=>{
+  let base = 5423 + Math.random()*10 -5;
+  document.getElementById("dsex").innerHTML = base.toFixed(2) + ' <span class="up">+0.45%</span>';
+},3000);
+</script>
+
+</body>
+</html>
