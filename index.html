@@ -1,89 +1,114 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bybit | My Assets</title>
+<title>Bybit - My Assets</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>body{font-family:'IBM Plex Sans',sans-serif;background:#0c0e12} .bybit-card{background:#15181f;border:1px solid #22252e} .bybit-yellow{color:#f7a600} .bybit-bg-yellow{background:#f7a600}</style>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;700&display=swap" rel="stylesheet">
+<style>body{font-family:'IBM Plex Sans',sans-serif;background:#0c0e12} .bybit-card{background:#15181f;border:1px solid #22252e} .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#f7a600;color:#000;padding:10px 20px;border-radius:999px;font-weight:800;font-size:13px;z-index:9999}</style>
 </head>
-<body class="text-white">
+<body class="text-white pb-24">
 
-<!-- Header like Bybit -->
-<div class="bg-[#15181f] border-b border-[#22252e] px-4 py-3 flex items-center justify-between">
-<div class="flex items-center gap-2"><span class="text-[#f7a600] font-black text-xl">BYBIT</span><span class="text-[11px] bg-[#22252e] px-2 py-0.5 rounded text-white/50">PRO • BD</span></div>
-<div class="flex gap-3 text-[11px]"><span class="text-white/40">UID: 1088****23</span><span class="bg-[#f7a600] text-black px-2 py-0.5 rounded font-bold">VIP1</span></div>
+<!-- TOP -->
+<div class="bg-[#15181f] border-b border-[#22252e] px-4 py-3 flex justify-between">
+<span class="text-[#f7a600] font-black">BYBIT <span class="text-[10px] bg-[#22252e] text-white/50 px-2 py-0.5 rounded ml-1">PRO • BD</span></span>
+<span class="text-[11px] text-white/40">UID: 1088****23 <span class="bg-[#f7a600] text-black px-2 py-0.5 rounded font-bold ml-2">VIP1</span></span>
 </div>
 
-<!-- Total Assets - Exact Bybit Style -->
+<!-- ASSETS VIEW -->
+<div id="view-assets">
 <div class="p-4">
-<p class="text-[12px] text-[#8b8f9c]">Total Equity</p>
-<div class="flex items-baseline gap-2 mt-1">
-<h1 id="totalEq" class="text-[32px] font-bold leading-none tracking-tight">৳ 2,45,820.45</h1>
-<span class="text-[12px] text-[#20b26c] bg-[#20b26c]/10 px-2 py-0.5 rounded">+2.43%</span>
-</div>
-<p class="text-[12px] text-[#8b8f9c] mt-1">≈ $2,230.19 • Today’s PnL <span class="text-[#20b26c]">+৳ 1,240.00 (+0.52%)</span></p>
-
-<!-- Buttons like Bybit -->
+<p class="text-[11px] text-[#8b8f9c]">Total Equity</p>
+<h1 id="total" class="text-[30px] font-bold">৳ 245,820.00</h1>
+<p class="text-[11px] text-[#8b8f9c]">≈ $<span id="usd">2230.19</span> • Today's PnL <span class="text-[#20b26c]">+৳ <span id="pnl">1,240.00</span></span></p>
 <div class="grid grid-cols-4 gap-2 mt-4">
-<button onclick="action('deposit')" class="bybit-bg-yellow text-black py-2.5 rounded text-[13px] font-bold">Deposit</button>
-<button onclick="action('withdraw')" class="bybit-card py-2.5 rounded text-[13px] font-medium">Withdraw</button>
-<button onclick="action('transfer')" class="bybit-card py-2.5 rounded text-[13px] font-medium">Transfer</button>
-<button onclick="action('convert')" class="bybit-card py-2.5 rounded text-[13px] font-medium">Convert</button>
+<button onclick="openModal('deposit')" class="bg-[#f7a600] text-black py-2.5 rounded text-[12px] font-bold">Deposit</button>
+<button onclick="openModal('withdraw')" class="bybit-card py-2.5 rounded text-[12px]">Withdraw</button>
+<button onclick="openModal('transfer')" class="bybit-card py-2.5 rounded text-[12px]">Transfer</button>
+<button onclick="openModal('convert')" class="bybit-card py-2.5 rounded text-[12px]">Convert</button>
 </div>
 </div>
 
-<!-- Account Tabs -->
 <div class="px-4 flex gap-5 border-b border-[#22252e] text-[13px]">
-<button class="py-3 border-b-2 border-[#f7a600] font-bold">Funding</button>
-<button class="py-3 text-[#8b8f9c]">Unified Trading</button>
-<button class="py-3 text-[#8b8f9c]">Inverse</button>
+<button onclick="switchFunding(this,'Funding')" class="py-3 border-b-2 border-[#f7a600] font-bold funding-tab">Funding</button>
+<button onclick="switchFunding(this,'Unified')" class="py-3 text-[#8b8f9c] funding-tab">Unified Trading</button>
+<button onclick="switchFunding(this,'Inverse')" class="py-3 text-[#8b8f9c] funding-tab">Inverse</button>
 </div>
 
-<!-- My Banks Section - Professional -->
 <div class="p-4">
-<div class="flex justify-between items-center"><h2 class="text-[14px] font-bold">My Banks & Wallets</h2><span class="text-[11px] text-[#8b8f9c]">6 Accounts • Hide 0 Balance</span></div>
-
-<div id="bankList" class="mt-3 space-y-[1px] bg-[#22252e] rounded-lg overflow-hidden border border-[#22252e]">
-<!-- Rendered by JS -->
-</div>
+<div class="flex justify-between"><h2 class="text-[13px] font-bold">My Banks & Wallets</h2><span id="bankCount" class="text-[10px] text-[#8b8f9c]">6 Accounts</span></div>
+<div id="bankList" class="mt-3 bg-[#22252e] rounded-lg overflow-hidden border border-[#22252e]"></div>
 </div>
 
-<!-- Assets -->
-<div class="px-4 pb-24">
-<div class="flex justify-between items-center mt-2"><h2 class="text-[13px] font-bold">Assets</h2><span class="text-[11px] text-[#8b8f9c]">Value (BDT) ▼</span></div>
-<div class="mt-2 space-y-2">
-<div class="bybit-card rounded-lg p-3 flex justify-between"><div class="flex gap-3"><img src="https://cryptologos.cc/logos/tether-usdt-logo.png" class="w-7 h-7"><div><p class="text-[13px] font-medium">USDT</p><p class="text-[11px] text-[#8b8f9c]">Tether</p></div></div><div class="text-right"><p class="text-[13px] font-medium">1,240.50</p><p class="text-[11px] text-[#8b8f9c]">৳ 136,455</p></div></div>
-<div class="bybit-card rounded-lg p-3 flex justify-between"><div class="flex gap-3"><div class="w-7 h-7 bg-[#f7931a] rounded-full"></div><div><p class="text-[13px] font-medium">BTC</p><p class="text-[11px] text-[#8b8f9c]">Bitcoin</p></div></div><div class="text-right"><p class="text-[13px] font-medium">0.0124</p><p class="text-[11px] text-[#20b26c]">+2.1%</p></div></div>
-</div>
+<div class="px-4"><h2 class="text-[13px] font-bold">Assets</h2><div class="mt-2 space-y-2"><div class="bybit-card rounded-lg p-3 flex justify-between"><div class="flex gap-3 items-center"><div class="w-7 h-7 bg-[#26a17b] rounded-full"></div><div><p class="text-[13px]">USDT</p><p class="text-[10px] text-white/40">Tether</p></div></div><p class="text-[13px]">1,240.50<br><span class="text-[10px] text-white/40">৳ 136,455</span></p></div><div class="bybit-card rounded-lg p-3 flex justify-between"><div class="flex gap-3 items-center"><div class="w-7 h-7 bg-[#f7931a] rounded-full"></div><div><p class="text-[13px]">BTC</p><p class="text-[10px] text-white/40">Bitcoin</p></div></div><p class="text-[13px]">0.0124<br><span class="text-[10px] text-[#20b26c]">+2.1%</span></p></div></div></div>
 </div>
 
-<!-- Bottom Nav Exact Bybit -->
-<div class="fixed bottom-0 w-full bg-[#15181f] border-t border-[#22252e] flex justify-around py-2 text-[10px] text-[#8b8f9c]">
-<div class="text-center"><div>◫</div>Home</div><div class="text-center"><div>↗</div>Markets</div><div class="text-center"><div>⇄</div>Trade</div><div class="text-center text-[#f7a600]"><div>◧</div>Assets</div><div class="text-center"><div>☰</div>More</div>
+<!-- OTHER VIEWS -->
+<div id="view-home" class="hidden p-4"><h1 class="font-bold text-lg">Home</h1><div class="bybit-card p-4 mt-3 rounded-lg"><p class="text-sm">Welcome to DSE Predict PRO</p><button onclick="switchView('assets')" class="mt-3 bg-[#f7a600] text-black px-4 py-2 rounded text-sm font-bold">Go to Assets</button></div></div>
+<div id="view-markets" class="hidden p-4"><h1 class="font-bold text-lg">Markets</h1><div id="marketList" class="mt-3 space-y-2"></div></div>
+<div id="view-trade" class="hidden p-4"><h1 class="font-bold text-lg">Trade</h1><div class="bybit-card p-4 mt-3 rounded-lg text-center"><p class="text-sm">BEXIMCO - ৳ 125.4</p><div class="grid grid-cols-2 gap-2 mt-4"><button onclick="tradeOrder('BUY')" class="bg-[#20b26c] py-3 rounded font-bold">BUY</button><button onclick="tradeOrder('SELL')" class="bg-[#ef454a] py-3 rounded font-bold">SELL</button></div></div></div>
+<div id="view-more" class="hidden p-4"><h1 class="font-bold text-lg">More</h1><p class="text-sm text-white/50 mt-2">Settings, Halal Mode, bKash Link etc.</p></div>
+
+<!-- BOTTOM NAV -->
+<div class="fixed bottom-0 w-full bg-[#15181f] border-t border-[#22252e] flex justify-around py-2 text-[10px]">
+<button onclick="switchView('home')" id="nav-home" class="text-white/40">Home</button>
+<button onclick="switchView('markets')" id="nav-markets" class="text-white/40">Markets</button>
+<button onclick="switchView('trade')" id="nav-trade" class="text-white/40">Trade</button>
+<button onclick="switchView('assets')" id="nav-assets" class="text-[#f7a600] font-bold">Assets</button>
+<button onclick="switchView('more')" id="nav-more" class="text-white/40">More</button>
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+<div class="bg-[#15181f] border border-[#22252e] p-5 w-full max-w-sm rounded-xl">
+<h3 id="mTitle" class="font-bold">Deposit</h3>
+<p id="mDesc" class="text-[11px] text-white/50 mt-1">Select amount & bank</p>
+<select id="bankSelect" class="w-full mt-3 bg-[#0c0e12] border border-[#22252e] p-3 rounded-lg text-sm"></select>
+<input id="mAmt" type="number" placeholder="Amount e.g. 5000" class="w-full mt-2 bg-[#0c0e12] border border-[#22252e] p-3 rounded-lg">
+<div class="grid grid-cols-3 gap-2 mt-2 text-xs"><button onclick="setAmt(1000)" class="bybit-card py-2 rounded">1000</button><button onclick="setAmt(5000)" class="bybit-card py-2 rounded">5000</button><button onclick="setAmt(10000)" class="bybit-card py-2 rounded">10000</button></div>
+<div class="grid grid-cols-2 gap-2 mt-4"><button onclick="closeModal()" class="bybit-card py-3 rounded">Cancel</button><button onclick="confirmModal()" class="bg-[#f7a600] text-black py-3 rounded font-bold">Confirm</button></div>
+</div>
 </div>
 
 <script>
-let total = 245820;
-let banks = [
-{name:'BRAC Bank - Savings',num:'***4521',bal:52420,icon:'BRAC',color:'#1a3a8f'},
-{name:'Islami Bank Bangladesh',num:'***1023 • Halal',bal:75200,icon:'IBBL',color:'#00824a'},
-{name:'Dutch-Bangla Bank',num:'***8890',bal:18500,icon:'DBBL',color:'#c4122e'},
-{name:'City Bank - Current',num:'***3341',bal:34000,icon:'CITY',color:'#e85d04'},
-{name:'bKash Personal',num:'01*** 556677',bal:12700,icon:'bK',color:'#e2136e'},
-{name:'Nagad Personal',num:'01*** 556677',bal:8500,icon:'NG',color:'#f15a22'},
-];
-function render(){
-let html=''; banks.forEach(b=>{
-html+=`<div class="bg-[#15181f] p-3 flex justify-between items-center hover:bg-[#1a1e29] cursor-pointer"><div class="flex gap-3 items-center"><div class="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold text-white" style="background:${b.color}">${b.icon}</div><div><p class="text-[13px] font-medium">${b.name}</p><p class="text-[11px] text-[#8b8f9c]">${b.num} • Available</p></div></div><div class="text-right"><p class="text-[13px] font-medium">৳ ${b.bal.toLocaleString('en-BD')}</p><p class="text-[11px] text-[#8b8f9c]">$ ${(b.bal/110).toFixed(2)}</p></div></div>`;
+let total=245820;
+let banks=[{name:'BRAC Bank - Savings',num:'***4521',bal:52420},{name:'Islami Bank Bangladesh',num:'***1023 • Halal',bal:75200},{name:'Dutch-Bangla Bank',num:'***8890',bal:18500},{name:'City Bank - Current',num:'***3341',bal:34000},{name:'bKash Personal',num:'01*** 556677',bal:12700},{name:'Nagad Personal',num:'01*** 556677',bal:8500}];
+let colors=['#1a3a8f','#00824a','#c4122e','#e85d04','#e2136e','#f15a22'];
+let currentMode='deposit';
+let markets=[{n:'BEXIMCO',p:125.4},{n:'BRAC Bank',p:42.2},{n:'SQUR Pharma',p:210.5}];
+
+function renderBanks(){
+let h=''; banks.forEach((b,i)=>{
+h+=`<div onclick="openModal('transfer','${i}')" class="bg-[#15181f] p-3 flex justify-between items-center hover:bg-[#1a1e29] cursor-pointer border-b border-[#22252e] last:border-0"><div class="flex gap-3 items-center"><div class="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold" style="background:${colors[i]}">${b.name.slice(0,4)}</div><div><p class="text-[13px]">${b.name}</p><p class="text-[10px] text-white/40">${b.num}</p></div></div><div class="text-right"><p class="text-[13px]">৳ ${b.bal.toLocaleString()}</p><p class="text-[10px] text-white/40">$ ${(b.bal/110).toFixed(2)}</p></div></div>`;
 });
-document.getElementById('bankList').innerHTML=html;
-document.getElementById('totalEq').innerText='৳ '+total.toLocaleString('en-BD',{minimumFractionDigits:2});
+document.getElementById('bankList').innerHTML=h;
+document.getElementById('total').innerText='৳ '+total.toLocaleString('en-BD',{minimumFractionDigits:2});
+document.getElementById('usd').innerText=(total/110).toFixed(2);
+let sel=document.getElementById('bankSelect'); sel.innerHTML=banks.map((b,i)=>`<option value="${i}">${b.name} - ৳ ${b.bal}</option>`).join('');
+document.getElementById('marketList').innerHTML=markets.map(m=>`<div onclick="switchView('trade'); toast('${m.n} selected')" class="bybit-card p-3 rounded-lg flex justify-between"><b class="text-sm">${m.n}</b><span class="text-sm">৳ ${m.p}</span></div>`).join('');
 }
-function action(t){
-let m=t.toUpperCase(); let toast=document.createElement('div'); toast.className='fixed bottom-20 left-1/2 -translate-x-1/2 bg-[#f7a600] text-black px-4 py-2 rounded-full text-[12px] font-bold z-50'; toast.innerText=m+' - Coming Soon • Demo'; document.body.appendChild(toast); setTimeout(()=>toast.remove(),2000);
+function switchView(v){
+['home','markets','trade','assets','more'].forEach(id=>document.getElementById('view-'+id).classList.add('hidden'));
+document.getElementById('view-'+v).classList.remove('hidden');
+['home','markets','trade','assets','more'].forEach(id=>document.getElementById('nav-'+id).className='text-white/40');
+document.getElementById('nav-'+v).className='text-[#f7a600] font-bold';
 }
-render();
+function switchFunding(el,name){document.querySelectorAll('.funding-tab').forEach(b=>{b.className='py-3 text-[#8b8f9c] funding-tab'}); el.className='py-3 border-b-2 border-[#f7a600] font-bold funding-tab'; toast(name+' - Filter Applied');}
+function openModal(mode,idx){currentMode=mode; document.getElementById('mTitle').innerText=mode.toUpperCase(); document.getElementById('modal').classList.remove('hidden'); if(idx!==undefined) document.getElementById('bankSelect').value=idx;}
+function closeModal(){document.getElementById('modal').classList.add('hidden');}
+function setAmt(v){document.getElementById('mAmt').value=v;}
+function confirmModal(){
+let amt=parseInt(document.getElementById('mAmt').value||0); let bankIdx=parseInt(document.getElementById('bankSelect').value||0);
+if(!amt) return toast('টাকা লিখুন');
+if(currentMode==='deposit'){banks[bankIdx].bal+=amt; total+=amt; toast('✅ ৳'+amt+' Deposit to '+banks[bankIdx].name);}
+if(currentMode==='withdraw'){if(banks[bankIdx].bal<amt) return toast('❌ ব্যালেন্স কম'); banks[bankIdx].bal-=amt; total-=amt; toast('✅ ৳'+amt+' Withdraw Success');}
+if(currentMode==='transfer'){toast('✅ Transfer ৳'+amt+' Done');}
+if(currentMode==='convert'){toast('✅ Converted ৳'+amt+' to USDT');}
+renderBanks(); closeModal();
+}
+function tradeOrder(type){toast(type+' Order Placed ৳125.4'); total+=type==='BUY'?-1000:1000; renderBanks();}
+function toast(m){let t=document.createElement('div');t.className='toast';t.innerText=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2500);}
+renderBanks();
 </script>
 </body>
 </html>
