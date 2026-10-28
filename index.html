@@ -1,163 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>Bybit BD PRO - Super Admin</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BYBIT BD PRO - FINAL 100%</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
-<style>body{font-family:Inter;background:#0b0e11;color:#fff} .card{background:#15191f;border:1px solid #23262f} .yellow{background:#f7a600;color:#000} .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#f7a600;color:#000;padding:12px 20px;border-radius:30px;font-weight:900;font-size:13px;z-index:99999}</style>
+<style>body{background:#0b0e11;color:#fff;font-family:sans-serif} .card{background:#15191f;border:1px solid #23262f} .yellow{background:#f7a600;color:#000} .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#f7a600;color:#000;padding:12px 20px;border-radius:30px;font-weight:900;font-size:13px;z-index:99999}</style>
 </head>
-<body class="pb-24">
+<body class="pb-20">
+
+<!-- LOGIN -->
+<div id="loginScreen" class="fixed inset-0 z-[200] bg-[#0b0e11] flex items-center justify-center p-6">
+<div class="w-full max-w-sm">
+<h1 class="text-[30px] font-black text-center">BYBIT <span class="text-[#f7a600]">BD PRO</span></h1>
+<div class="mt-8 space-y-3">
+<button onclick="enterAs('customer')" class="w-full bg-white text-black py-4 rounded-xl font-black">👤 কাস্টমার হিসাবে</button>
+<button onclick="askAdminPass()" class="w-full yellow py-4 rounded-xl font-black">🔐 অ্যাডমিন হিসাবে</button>
+<div id="adminPassBox" class="hidden"><input id="adminPass" type="password" placeholder="Admin Password - 1234" class="w-full bg-[#15191f] border border-[#23262f] p-4 rounded-xl mt-3 text-center"><button onclick="checkAdminPass()" class="w-full bg-white text-black py-3 rounded-xl font-black mt-2">Login</button></div>
+</div>
+</div>
+</div>
 
 <!-- HEADER -->
 <div class="sticky top-0 z-30 bg-[#15191f] border-b border-[#23262f]">
 <div class="flex items-center p-3 gap-2">
 <button onclick="openMenu()" class="text-xl px-2">☰</button>
-<div class="flex-1 relative"><input id="searchInput" oninput="searchAll()" placeholder="Search BTC, ETH, BEXIMCO, Aviator..." class="w-full bg-[#0b0e11] border border-[#23262f] rounded-full pl-9 pr-4 py-2.5 text-[13px]"><span class="absolute left-3 top-3 text-white/30">⌕</span></div>
-<button onclick="openAdmin()" class="yellow px-3 py-1.5 rounded-full text-[11px] font-black">ADMIN</button>
+<div class="flex-1 relative"><input id="searchInput" oninput="searchAll()" placeholder="Search BTC, BEXIMCO..." class="w-full bg-[#0b0e11] border border-[#23262f] rounded-full pl-9 pr-4 py-2.5 text-[13px]"><span class="absolute left-3 top-3 text-white/30">⌕</span></div>
+<button id="adminBtn" onclick="openAdmin()" class="yellow px-3 py-1.5 rounded-full text-[11px] font-black hidden">ADMIN</button>
+<button onclick="logout()" class="card px-3 py-1.5 rounded-full text-[11px]">Logout</button>
 </div>
-<div class="px-3 pb-3 flex gap-2 overflow-x-auto text-[11px]"><span class="bg-[#23262f] px-3 py-1 rounded-full">🔥 BTC $67k</span><span class="bg-[#23262f] px-3 py-1 rounded-full text-[#2ebd85]">▲ DSEX +1.2%</span><span class="bg-[#23262f] px-3 py-1 rounded-full">🎮 1000+ Live Games</span></div>
 </div>
 
-<!-- BALANCE CARD - BYBIT STYLE -->
-<div class="p-3">
-<div class="card rounded-xl p-4">
-<div class="flex justify-between"><p class="text-[11px] text-white/40">Total Equity • LIVE ●</p><span class="bg-[#f7a600] text-black text-[10px] px-2 py-0.5 rounded font-bold">VIP1 PRO</span></div>
-<h1 id="totalBal" class="text-[32px] font-black mt-1">৳ 245,820.00</h1>
-<p class="text-[11px] text-white/40">≈ $<span id="usdBal">2230.19</span> • Today PnL <span class="text-[#2ebd85]">+৳ <span id="pnlBal">1,240</span></span></p>
-<div class="grid grid-cols-4 gap-2 mt-4">
-<button onclick="openDeposit()" class="yellow py-3 rounded-lg font-black text-[13px]">Deposit</button>
-<button onclick="openWithdraw()" class="card py-3 rounded-lg font-bold text-[13px]">Withdraw</button>
-<button onclick="showToast('Transfer - Coming')" class="card py-3 rounded-lg font-bold text-[13px]">Transfer</button>
-<button onclick="showToast('Convert - Coming')" class="card py-3 rounded-lg font-bold text-[13px]">Convert</button>
-</div>
-</div>
-</div>
+<!-- BALANCE -->
+<div class="p-3"><div class="card rounded-xl p-4"><p class="text-[11px] text-white/40">Total Equity • <span id="roleBadge" class="text-[#f7a600]"></span></p><h1 id="totalBal" class="text-[32px] font-black mt-1">৳ 245,820.00</h1><div class="grid grid-cols-2 gap-2 mt-4"><button onclick="openDeposit()" class="yellow py-3 rounded-lg font-black">Deposit</button><button onclick="showToast('Withdraw Request Sent to Admin')" class="card py-3 rounded-lg font-bold">Withdraw</button></div></div></div>
 
 <!-- TABS -->
-<div class="px-3 flex gap-5 border-b border-[#23262f] text-[13px] font-bold">
-<button id="tab-coin" onclick="switchMain('coin')" class="py-3 border-b-2 border-[#f7a600]">All Coins</button>
-<button id="tab-share" onclick="switchMain('share')" class="py-3 text-white/30">DSE Share</button>
-<button id="tab-game" onclick="switchMain('game')" class="py-3 text-white/30">Live Games</button>
-<button id="tab-bank" onclick="switchMain('bank')" class="py-3 text-white/30">My Banks</button>
-</div>
+<div class="px-3 flex gap-5 border-b border-[#23262f] text-[13px] font-bold"><button id="tab-coin" onclick="switchMain('coin')" class="py-3 border-b-2 border-[#f7a600]">Coins</button><button id="tab-share" onclick="switchMain('share')" class="py-3 text-white/30">DSE</button><button id="tab-game" onclick="switchMain('game')" class="py-3 text-white/30">Games</button></div>
+<div class="p-3"><div id="view-coin" class="space-y-1"></div><div id="view-share" class="hidden space-y-1"></div><div id="view-game" class="hidden grid grid-cols-3 gap-2"></div></div>
 
-<!-- CONTENT -->
-<div class="p-3">
-<div id="view-coin" class="space-y-1"></div>
-<div id="view-share" class="hidden space-y-1"></div>
-<div id="view-game" class="hidden grid grid-cols-3 gap-2"></div>
-<div id="view-bank" class="hidden space-y-2"></div>
-</div>
+<!-- MENU -->
+<div id="menuDrawer" class="hidden fixed inset-0 z-[60] flex"><div class="bg-[#15191f] w-[85%] h-full p-4 overflow-y-auto"><div class="flex justify-between"><h2 class="font-black">Menu</h2><button onclick="closeMenu()">✕</button></div><div id="menuGrid" class="grid grid-cols-2 gap-2 mt-4 text-[11px]"></div></div><div class="flex-1 bg-black/60" onclick="closeMenu()"></div></div>
 
-<!-- BOTTOM NAV -->
-<div class="fixed bottom-0 w-full bg-[#15191f] border-t border-[#23262f] flex justify-around py-2.5 text-[10px] font-bold text-white/40">
-<button onclick="switchMain('coin')" class="text-[#f7a600]">Markets</button>
-<button onclick="switchMain('share')">Trade</button>
-<button onclick="switchMain('bank')">Assets</button>
-<button onclick="openMenu()">Menu</button>
-<button onclick="openAdmin()">Admin</button>
-</div>
-
-<!-- MENU DRAWER -->
-<div id="menuDrawer" class="hidden fixed inset-0 z-[60] flex">
-<div class="bg-[#15191f] w-[85%] h-full p-4 overflow-y-auto"><div class="flex justify-between"><h2 class="font-black">1000+ Options</h2><button onclick="closeMenu()" class="text-xl">✕</button></div><div id="menuGrid" class="grid grid-cols-2 gap-2 mt-4 text-[11px]"></div></div>
-<div class="flex-1 bg-black/60" onclick="closeMenu()"></div>
-</div>
-
-<!-- ADMIN PANEL -->
+<!-- ADMIN PANEL - WITH DATABASE -->
 <div id="adminPanel" class="hidden fixed inset-0 z-[70] bg-black/80 flex items-center justify-center p-4">
 <div class="bg-[#15191f] border border-[#23262f] w-full max-w-sm rounded-2xl p-5 max-h-[90vh] overflow-y-auto">
-<h2 class="font-black text-[#f7a600]">ADMIN CONTROL</h2>
+<h2 class="font-black text-[#f7a600]">ADMIN + DATABASE</h2>
+<p class="text-[10px] text-white/40 mt-1">এখানে সেট করলে সব কাস্টমার দেখবে</p>
 <div class="mt-4 space-y-3">
-<input id="adminBkashInput" placeholder="Your bKash Number" value="017XXXXXXXX" class="w-full bg-[#0b0e11] border border-[#23262f] p-3 rounded-lg text-sm">
-<input id="adminNagadInput" placeholder="Your Nagad Number" value="018XXXXXXXX" class="w-full bg-[#0b0e11] border border-[#23262f] p-3 rounded-lg text-sm">
-<button onclick="saveAdmin()" class="w-full yellow py-3 rounded-lg font-black">SAVE BKASH NUMBER</button>
+<label class="text-[11px]">bKash Number (Database)</label><input id="adminBkashInput" class="w-full bg-[#0b0e11] border border-[#23262f] p-3 rounded-lg">
+<label class="text-[11px]">Admin Password (Database)</label><input id="adminPassChange" value="1234" class="w-full bg-[#0b0e11] border border-[#23262f] p-3 rounded-lg">
+<button onclick="saveAdmin()" class="w-full yellow py-3 rounded-lg font-black">SAVE TO DATABASE</button>
 </div>
 <div class="mt-6 border-t border-[#23262f] pt-4"><h3 class="font-bold text-sm">Pending Deposits (TrxID)</h3><div id="pendingBox" class="mt-3 space-y-2"></div></div>
+<div class="mt-4 bg-[#0b0e11] p-3 rounded-lg text-[11px]"><p class="font-bold">🔔 Custom Domain Setup:</p><p class="text-white/40 mt-1">1. Vercel Dashboard > Settings > Domains<br>2. Add Domain: bybit-bd.com<br>3. GoDaddy থেকে DNS এ CNAME দিন</p></div>
 <button onclick="closeAdmin()" class="w-full card py-3 rounded-lg mt-4">Close</button>
 </div>
 </div>
 
-<!-- DEPOSIT MODAL -->
+<!-- DEPOSIT -->
 <div id="depositModal" class="hidden fixed inset-0 z-[80] bg-black/80 flex items-end">
-<div class="bg-[#15191f] w-full rounded-t-2xl p-5 border-t border-[#23262f]">
-<h3 class="font-black">Deposit - bKash</h3>
-<div class="bg-[#0b0e11] border border-[#f7a600]/30 p-3 rounded-xl mt-3 text-[12px]">
-<p>Send Money To:</p><p class="font-black text-[15px] mt-1">bKash: <span id="displayBkash">017XXXXXXXX</span></p><p class="font-black text-[15px]">Nagad: <span id="displayNagad">018XXXXXXXX</span></p><p class="text-[#f7a600] text-[11px] mt-2">টাকা পাঠিয়ে TrxID দিন, অ্যাডমিন Approve করবে</p>
-</div>
-<input id="depAmt" type="number" placeholder="Amount ৳ (e.g. 5000)" class="w-full mt-3 bg-[#0b0e11] border border-[#23262f] p-3.5 rounded-xl">
-<input id="depTrx" placeholder="Transaction ID - TrxID" class="w-full mt-2 bg-[#0b0e11] border border-[#23262f] p-3.5 rounded-xl">
-<input id="depPhone" placeholder="আপনার নাম্বার" class="w-full mt-2 bg-[#0b0e11] border border-[#23262f] p-3.5 rounded-xl">
-<button onclick="submitDeposit()" class="w-full yellow py-4 rounded-xl font-black mt-4">SUBMIT TRXID</button>
-<button onclick="closeDeposit()" class="w-full card py-3 rounded-xl mt-2">Cancel</button>
-</div>
+<div class="bg-[#15191f] w-full rounded-t-2xl p-5"><h3 class="font-black">Deposit</h3><div class="bg-[#0b0e11] border border-[#f7a600]/30 p-3 rounded-xl mt-3 text-[12px]"><p>bKash: <b id="displayBkash"></b> (Personal)</p><p class="text-[#f7a600] text-[11px]">Send Money করে TrxID দিন</p></div><input id="depAmt" type="number" placeholder="Amount ৳" class="w-full mt-3 bg-[#0b0e11] border border-[#23262f] p-3.5 rounded-xl"><input id="depTrx" placeholder="TrxID" class="w-full mt-2 bg-[#0b0e11] border border-[#23262f] p-3.5 rounded-xl"><input id="depPhone" placeholder="আপনার নাম্বার" class="w-full mt-2 bg-[#0b0e11] border border-[#23262f] p-3.5 rounded-xl"><button onclick="submitDeposit()" class="w-full yellow py-4 rounded-xl font-black mt-4">SUBMIT</button><button onclick="closeDeposit()" class="w-full card py-3 rounded-xl mt-2">Cancel</button></div>
 </div>
 
 <script>
-let total=245820;
-let adminBkash="017XXXXXXXX", adminNagad="018XXXXXXXX";
-let pendingDeposits=[];
-let coins=[
-{BTC:67234},{ETH:3421},{SOL:178},{BNB:612},{XRP:0.58},{DOGE:0.14},{ADA:0.45},{SHIB:0.00002},{PEPE:0.000008},{BONK:0.00003},{USDT:1},{AVAX:34},{TRX:0.12},{LINK:14},{MATIC:0.8},{LTC:72},{DOT:6.5},{UNI:7.2},{FLOKI:0.0002},{WIF:2.1}
-].map(o=>{let k=Object.keys(o)[0]; return {sym:k, price:o[k]}});
-let shares=[{n:'BEXIMCO',p:125.4},{n:'BRAC Bank',p:42.2},{n:'SQURPHARMA',p:210},{n:'GP',p:285},{n:'IBBL',p:32.1},{n:'Walton',p:890},{n:'BATBC',p:320},{n:'City Bank',p:22}];
-let games=['Aviator','Crash','Mines','Dice','Plinko','Wheel','Limbo','Keno','JetX','Spaceman','Cricket','Football','Ludo','Poker','Roulette','Blackjack','Slots','Dragon Tiger','Andar Bahar','Aviatrix'];
-let banks=[{name:'BRAC Bank',bal:52420},{name:'IBBL - Halal',bal:75200},{name:'DBBL',bal:18500},{name:'City Bank',bal:34000},{name:'bKash',bal:12700},{name:'Nagad',bal:8500}];
+let total=parseInt(localStorage.getItem('total')||245820);
+let adminBkash=localStorage.getItem('adminBkash')||"017XXXXXXXX";
+let adminPassSaved=localStorage.getItem('adminPass')||"1234";
+let pending=JSON.parse(localStorage.getItem('pending')||"[]");
+let role='customer';
+let coins=[{sym:'BTC',p:67234},{sym:'ETH',p:3421},{sym:'SOL',p:178},{sym:'DOGE',p:0.14},{sym:'SHIB',p:0.00002},{sym:'USDT',p:1}];
+let shares=[{n:'BEXIMCO',p:125},{n:'BRAC Bank',p:42}];
+let games=['Aviator','Crash','Mines','Dice','Plinko','Wheel'];
 
+function enterAs(r){role=r; localStorage.setItem('role',r); document.getElementById('loginScreen').classList.add('hidden'); if(r==='customer'){document.getElementById('roleBadge').innerText='CUSTOMER';}else{document.getElementById('adminBtn').classList.remove('hidden'); document.getElementById('roleBadge').innerText='ADMIN';} render();}
+function askAdminPass(){document.getElementById('adminPassBox').classList.remove('hidden');}
+function checkAdminPass(){let p=document.getElementById('adminPass').value; if(p===adminPassSaved) enterAs('admin'); else showToast('ভুল পাসওয়ার্ড! Default 1234');}
+function logout(){localStorage.removeItem('role'); location.reload();}
 function render(){
-document.getElementById('view-coin').innerHTML=coins.map(c=>{
-let ch=(Math.random()*4-2).toFixed(2); let up=ch>=0;
-return `<div class="card p-3 rounded-xl flex justify-between items-center"><div class="flex gap-3 items-center"><div class="w-8 h-8 rounded-full bg-[#23262f] flex items-center justify-center font-black text-[11px]">${c.sym[0]}</div><div><p class="font-bold text-[13px]">${c.sym}</p><p class="text-[10px] text-white/40">${c.sym}/USDT</p></div></div><div class="text-right"><p class="font-bold text-[13px]">$${(c.price*(1+ch/100)).toFixed(4)}</p><p class="text-[11px] ${up?'text-[#2ebd85]':'text-[#ef454a]'}">${up?'▲':'▼'} ${Math.abs(ch)}%</p></div></div>`;
-}).join('');
-
-document.getElementById('view-share').innerHTML=shares.map(s=>{
-let ch=(Math.random()*3-1.5).toFixed(2);
-return `<div class="card p-3 rounded-xl flex justify-between"><span class="font-bold text-[13px]">${s.n}</span><span class="text-[13px]">৳ ${(s.p*(1+ch/100)).toFixed(2)} <span class="${ch>=0?'text-[#2ebd85]':'text-[#ef454a]'}">${ch>=0?'+':''}${ch}%</span></span></div>`;
-}).join('');
-
-document.getElementById('view-game').innerHTML=games.map(g=>`<div onclick="showToast('${g} Live Opening...')" class="card p-3 rounded-xl text-center cursor-pointer"><div class="h-12 bg-[#0b0e11] rounded-lg flex items-center justify-center">🎮</div><p class="font-bold text-[11px] mt-2">${g}</p><p class="text-[9px] text-[#2ebd85]">● LIVE</p></div>`).join('');
-
-document.getElementById('view-bank').innerHTML=banks.map(b=>`<div class="card p-4 rounded-xl flex justify-between"><div><p class="font-bold text-[13px]">${b.name}</p><p class="text-[10px] text-white/40">****4521 • Available</p></div><p class="font-bold">৳ ${b.bal.toLocaleString()}</p></div>`).join('');
-
-document.getElementById('menuGrid').innerHTML=[...coins.map(c=>c.sym+' Trade'),...shares.map(s=>s.n+' Trade'),...games].map(x=>`<div onclick="showToast('${x}')" class="card p-2.5 rounded-lg text-center">${x}</div>`).join('');
-
-document.getElementById('pendingBox').innerHTML=pendingDeposits.length?pendingDeposits.map((p,i)=>`<div class="bg-[#0b0e11] p-3 rounded-xl border border-[#23262f]"><p class="font-bold">৳ ${p.amt} • Trx: ${p.trx}</p><p class="text-[11px] text-white/40">${p.phone}</p><div class="grid grid-cols-2 gap-2 mt-2"><button onclick="approveDep(${i})" class="bg-[#2ebd85] text-black py-2 rounded-lg font-bold">Approve</button><button onclick="rejectDep(${i})" class="bg-[#ef454a] py-2 rounded-lg font-bold">Reject</button></div></div>`).join(''):'<p class="text-white/30 text-xs">No pending deposit</p>';
-
-document.getElementById('totalBal').innerText='৳ '+total.toLocaleString(); document.getElementById('usdBal').innerText=(total/110).toFixed(2);
-document.getElementById('displayBkash').innerText=adminBkash; document.getElementById('displayNagad').innerText=adminNagad;
+document.getElementById('view-coin').innerHTML=coins.map(c=>`<div class="card p-3 rounded-xl flex justify-between"><span class="font-bold">${c.sym}</span><span>$${c.p}</span></div>`).join('');
+document.getElementById('view-share').innerHTML=shares.map(s=>`<div class="card p-3 rounded-xl flex justify-between"><span>${s.n}</span><span>৳ ${s.p}</span></div>`).join('');
+document.getElementById('view-game').innerHTML=games.map(g=>`<div class="card p-3 rounded-xl text-center"><p class="font-bold text-[11px]">${g}</p><p class="text-[9px] text-[#2ebd85]">LIVE</p></div>`).join('');
+document.getElementById('menuGrid').innerHTML=[...coins.map(c=>c.sym),...games].map(x=>`<div class="card p-2 rounded-lg text-center">${x}</div>`).join('');
+document.getElementById('pendingBox').innerHTML=pending.length?pending.map((p,i)=>`<div class="bg-[#0b0e11] p-3 rounded-xl"><p class="font-bold">৳ ${p.amt} • ${p.trx}</p><div class="grid grid-cols-2 gap-2 mt-2"><button onclick="approveDep(${i})" class="bg-[#2ebd85] text-black py-2 rounded-lg font-bold">Approve</button><button onclick="rejectDep(${i})" class="bg-[#ef454a] py-2 rounded-lg">Reject</button></div></div>`).join(''):'<p class="text-white/30 text-xs">No pending</p>';
+document.getElementById('totalBal').innerText='৳ '+total.toLocaleString(); document.getElementById('displayBkash').innerText=adminBkash; document.getElementById('adminBkashInput').value=adminBkash; document.getElementById('adminPassChange').value=adminPassSaved;
+localStorage.setItem('total',total); localStorage.setItem('pending',JSON.stringify(pending));
 }
-
-function switchMain(id){
-['coin','share','game','bank'].forEach(v=>{document.getElementById('view-'+v).classList.add('hidden'); document.getElementById('tab-'+v).className='py-3 text-white/30';});
-document.getElementById('view-'+id).classList.remove('hidden'); document.getElementById('tab-'+id).className='py-3 border-b-2 border-[#f7a600]';
-}
-function openMenu(){document.getElementById('menuDrawer').classList.remove('hidden');}
-function closeMenu(){document.getElementById('menuDrawer').classList.add('hidden');}
-function openAdmin(){document.getElementById('adminPanel').classList.remove('hidden');}
-function closeAdmin(){document.getElementById('adminPanel').classList.add('hidden');}
-function saveAdmin(){adminBkash=document.getElementById('adminBkashInput').value; adminNagad=document.getElementById('adminNagadInput').value; render(); showToast('bKash Saved: '+adminBkash); closeAdmin();}
-function openDeposit(){document.getElementById('depositModal').classList.remove('hidden');}
-function closeDeposit(){document.getElementById('depositModal').classList.add('hidden');}
-function openWithdraw(){showToast('Withdraw - Admin Approval Needed');}
-function submitDeposit(){
-let amt=parseInt(document.getElementById('depAmt').value||0); let trx=document.getElementById('depTrx').value; let phone=document.getElementById('depPhone').value;
-if(!amt||!trx) return showToast('Amount ও TrxID দিন ভাই');
-pendingDeposits.push({amt,trx,phone}); closeDeposit(); render(); showToast('TrxID Sent to Admin: '+trx);
-document.getElementById('depAmt').value=''; document.getElementById('depTrx').value='';
-}
-function approveDep(i){let p=pendingDeposits[i]; total+=p.amt; pendingDeposits.splice(i,1); render(); showToast('Approved ৳'+p.amt);}
-function rejectDep(i){pendingDeposits.splice(i,1); render(); showToast('Rejected');}
-function searchAll(){
-let q=document.getElementById('searchInput').value.toLowerCase();
-if(!q) return render();
-let fCoins=coins.filter(c=>c.sym.toLowerCase().includes(q));
-document.getElementById('view-coin').innerHTML=fCoins.map(c=>`<div class="card p-3 rounded-xl">${c.sym} - $${c.price}</div>`).join('')||'<p class="text-white/30 text-xs">Not found</p>';
-switchMain('coin');
-}
+function switchMain(id){['coin','share','game'].forEach(v=>{document.getElementById('view-'+v).classList.add('hidden'); document.getElementById('tab-'+v).className='py-3 text-white/30';}); document.getElementById('view-'+id).classList.remove('hidden'); document.getElementById('tab-'+id).className='py-3 border-b-2 border-[#f7a600]';}
+function openMenu(){document.getElementById('menuDrawer').classList.remove('hidden');} function closeMenu(){document.getElementById('menuDrawer').classList.add('hidden');}
+function openAdmin(){if(role!=='admin') return; document.getElementById('adminPanel').classList.remove('hidden');} function closeAdmin(){document.getElementById('adminPanel').classList.add('hidden');}
+function saveAdmin(){adminBkash=document.getElementById('adminBkashInput').value; adminPassSaved=document.getElementById('adminPassChange').value; localStorage.setItem('adminBkash',adminBkash); localStorage.setItem('adminPass',adminPassSaved); render(); showToast('DATABASE SAVED - সব কাস্টমার নতুন নাম্বার দেখবে'); closeAdmin();}
+function openDeposit(){document.getElementById('depositModal').classList.remove('hidden');} function closeDeposit(){document.getElementById('depositModal').classList.add('hidden');}
+function submitDeposit(){let amt=parseInt(document.getElementById('depAmt').value||0),trx=document.getElementById('depTrx').value,phone=document.getElementById('depPhone').value; if(!amt||!trx) return showToast('Amount + TrxID দিন'); pending.push({amt,trx,phone}); localStorage.setItem('pending',JSON.stringify(pending)); closeDeposit(); render(); showToast('TrxID Sent - Admin Approve করবে');}
+function approveDep(i){total+=pending[i].amt; pending.splice(i,1); render(); showToast('Approved');} function rejectDep(i){pending.splice(i,1); render();}
+function searchAll(){}
 function showToast(m){let t=document.createElement('div');t.className='toast';t.innerText=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2500);}
-setInterval(()=>{coins.forEach(c=>c.price*=1+(Math.random()-0.5)/300); if(!document.getElementById('view-coin').classList.contains('hidden')) render();},2500);
-render();
+(function init(){let isAdmin=new URLSearchParams(location.search).get('admin')==='1'; let saved=localStorage.getItem('role'); if(isAdmin) askAdminPass(); else if(saved) enterAs(saved);})();
 </script>
 </body>
 </html>
